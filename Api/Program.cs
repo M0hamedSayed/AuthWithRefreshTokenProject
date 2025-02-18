@@ -1,15 +1,32 @@
 using Asp.Versioning;
 using Core.Extensions;
 using Infrastructure.DatabaseContext;
+using Infrastructure.Extensions;
 using Infrastructure.Helpers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Microsoft.AspNetCore.Identity;
+using System.Data;
+using Infrastructure.Seeding;
+using Infrastructure.Repositories;
+using Infrastructure.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers( options =>
+{
+    options.Filters.Add(new ProducesAttribute("application/json"));
+    options.Filters.Add(new ConsumesAttribute("application/json"));
+
+    //Authorization policy
+    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+    options.Filters.Add(new AuthorizeFilter(policy));
+});
 // Add API versioning
 builder.Services.AddApiVersioning(options =>
 {
@@ -23,17 +40,22 @@ builder.Services.AddApiVersioning(options =>
     options.SubstituteApiVersionInUrl = true;
 });
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-
 //Connection To SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("Default"))
         .AddInterceptors(new SaveChangesInterceptor());
 });
+
+// Dependency injections
+builder.Services.AddCoreDependancies()
+    .AddAuthConfiguration(builder.Configuration)
+    .AddInfraDependancies();
+
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 
 //allowed origins
 builder.Services.AddCors(options => {
@@ -55,6 +77,13 @@ builder.Services.AddSerilog();
 
 var app = builder.Build();
 
+//sedding data
+using (var scope = app.Services.CreateScope())
+{
+    var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+    await DataSeed.SeedAsync(unitOfWork);
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -69,6 +98,7 @@ app.UseHttpsRedirection();
 
 app.UseCors();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
