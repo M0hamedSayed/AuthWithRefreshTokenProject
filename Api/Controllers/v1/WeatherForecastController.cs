@@ -1,9 +1,11 @@
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controllers
+namespace Api.Controllers.v1
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -19,6 +21,7 @@ namespace Api.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
+        
         public IEnumerable<WeatherForecast> Get()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
