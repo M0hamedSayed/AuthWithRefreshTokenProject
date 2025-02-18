@@ -10,6 +10,7 @@ namespace Data.Entities.Identity
         [MaxLength(100)]
         [Column("full_name")]
         public required String FullName { get; set; }
+        [Column("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
