@@ -67,7 +67,7 @@ namespace Core.Base
             };
         }
 
-        public Response<T> Created<T>(T entity, object Meta = null)
+        public Response<T> Created<T>(T entity, object? Meta)
         {
             return new Response<T>()
             {
