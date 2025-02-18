@@ -9,13 +9,16 @@ namespace Infrastructure.DatabaseContext
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
     {
-        #region Methods
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        #region constructors
+        public ApplicationDbContext()
         {
-            base.OnConfiguring(optionsBuilder);
-            optionsBuilder.AddInterceptors(new SoftDeleteInterceptor());
-        }
 
+        }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+        }
+        #endregion
+        #region Methods
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
