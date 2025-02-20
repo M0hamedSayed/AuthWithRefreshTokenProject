@@ -26,6 +26,10 @@ namespace Core.Middleware
                 if (context.Response.StatusCode == 404 && !context.Response.HasStarted)
                 {
                     throw new KeyNotFoundException("Not Found !");
+                } 
+                else if (context.Response.StatusCode == 401 && !context.Response.HasStarted)
+                {
+                    throw new UnauthorizedAccessException("Not Authorized !");
                 }
             }
             catch (Exception error)
