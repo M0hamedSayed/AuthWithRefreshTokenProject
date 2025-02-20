@@ -25,6 +25,7 @@ namespace Infrastructure.Extensions
                 // user config
                 options.User.RequireUniqueEmail = true;
                 options.SignIn.RequireConfirmedEmail = true;
+                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 // lockout config
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 5;
@@ -46,6 +47,10 @@ namespace Infrastructure.Extensions
             TokenSettings tokenSettings = new TokenSettings();
             configuration.GetSection("tokenSettings").Bind(tokenSettings);
             services.AddSingleton(tokenSettings);
+            // bind email settings
+            EmailSettings emailSettings = new EmailSettings();
+            configuration.GetSection("emailSettings").Bind(emailSettings);
+            services.AddSingleton(emailSettings);
             // JWT Auth
             services.AddAuthentication( options =>
             {
