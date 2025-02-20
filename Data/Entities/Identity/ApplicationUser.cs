@@ -18,6 +18,9 @@ namespace Data.Entities.Identity
         public DateTime? DeletedAt { get; set; } = null;
         [Column("is_deleted")]
         public bool IsDeleted { get; set; } = false;
+        public DateTime? LastEmailConfirmSent { get; set; }
+        public DateTime? LastEmailPasswordResetSent { get; set; }
+
         [InverseProperty(nameof(UserRefreshTokens.user))]
         public virtual ICollection<UserRefreshTokens>? userRefreshTokens { get; set; }
     }

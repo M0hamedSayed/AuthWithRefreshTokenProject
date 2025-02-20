@@ -29,9 +29,9 @@ namespace Data.Entities.Identity
 
         // user metadata
         [Column("user_agent",TypeName = "nvarchar(300)")]
-        public string UserAgent { get; set; } = string.Empty;
+        public string? UserAgent { get; set; }
         [MaxLength(20)]
-        public string IP { get; set; } = string.Empty;
+        public string? IP { get; set; }
 
         [MaxLength(100)]
         public string? Country { get; set; }
