@@ -7,7 +7,7 @@
 
     2.Generic(Repository) Design Pattern
 
-    3.Localizations Of Data And Responses
+    3.Handle Rpository with Unit Of Work (UOW) Pattern
 
     4.Fluent Validations 
 
