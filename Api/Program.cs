@@ -16,6 +16,7 @@ using Infrastructure.Interfaces;
 using Service.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
+using Core.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,7 +56,7 @@ builder.Services.AddCoreDependancies()
     .AddAuthConfiguration(builder.Configuration)
     .AddInfraDependancies()
     .AddServices();
-
+builder.Services.AddTransient<AdminOnlyFilter>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
