@@ -102,7 +102,12 @@ namespace Service.Implementations
             var user = await _unitOfWork.UserManager.FindByIdAsync(userId.ToString());
             if (user == null) return false;
             var confrimEmail = await _unitOfWork.UserManager.ConfirmEmailAsync(user, token);
+
             if(!confrimEmail.Succeeded) return false;
+
+            // handle updatedAt
+            user.UpdatedAt = DateTime.UtcNow;
+            await _unitOfWork.UserManager.UpdateAsync(user);
             return true;
         }
 
@@ -117,11 +122,10 @@ namespace Service.Implementations
             if (principal is null) throw new UnauthorizedAccessException("Invalid Token");
 
             string? id = principal.FindFirstValue("Id");
-            var user = await _currentUserService.GetUserAsync();
-            if (user is null || user.IsDeleted)
-                throw new UnauthorizedAccessException("Invalid User");
+
+            if(!int.TryParse(id, out var userId)) throw new UnauthorizedAccessException("Invalid Token");
             // get refresh token
-            var rToken = await _unitOfWork.RefreshTokensRepository.FindAsync(rt => rt.RefreshToken == refreshtoken, new[] { "user" });
+            var rToken = await _unitOfWork.RefreshTokensRepository.FindAsync(rt => rt.RefreshToken == refreshtoken && rt.UserId == userId, new[] { "user" });
 
             if (rToken is null || rToken.IsRevoked)
             {
@@ -137,7 +141,7 @@ namespace Service.Implementations
                 throw new UnauthorizedAccessException("Invalid Refresh Token");
             }
 
-            var newAccessToken = await GenerateGwtToken(user);
+            var newAccessToken = await GenerateGwtToken(rToken.user);
 
             rToken.AccessToken = newAccessToken;
             await _unitOfWork.Complete();
