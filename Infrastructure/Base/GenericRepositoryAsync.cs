@@ -50,7 +50,7 @@ namespace Infrastructure.Base
         }
 
 
-        public async Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> criteria, string[]? includes)
+        public async Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> criteria, string[]? includes = null)
         {
             return await HandleIncludes(includes).Where(criteria).ToListAsync();
         }
@@ -60,7 +60,7 @@ namespace Infrastructure.Base
             return await HandleIncludes(includes).Where(criteria).Skip(skip).Take(take).ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> criteria, string[]? includes, int? take, int? skip, Expression<Func<T, object>>? orderBy, string orderByDirection = OrderBy.Ascending)
+        public async Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> criteria, string[]? includes = null, int? take = null, int? skip = null, Expression<Func<T, object>>? orderBy = null, string orderByDirection = OrderBy.Ascending)
         {
             IQueryable<T> query = HandleIncludes(includes).Where(criteria);
 
@@ -81,7 +81,7 @@ namespace Infrastructure.Base
             return await query.ToListAsync();
         }
 
-        public async Task<T?> FindAsync(Expression<Func<T, bool>> criteria, string[]? includes)
+        public async Task<T?> FindAsync(Expression<Func<T, bool>> criteria, string[]? includes = null)
         {
             return await HandleIncludes(includes).SingleOrDefaultAsync(criteria);
         }
@@ -169,7 +169,7 @@ namespace Infrastructure.Base
             await _context.Database.RollbackTransactionAsync();
         }
 
-        private IQueryable<T> HandleIncludes(string[]? includes)
+        private IQueryable<T> HandleIncludes(string[]? includes = null)
         {
             IQueryable<T> query = _context.Set<T>();
 

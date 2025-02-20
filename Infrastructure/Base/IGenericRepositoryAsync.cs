@@ -20,11 +20,11 @@ namespace Infrastructure.Base
 
         Task<T?> GetByIdAsync(int id);
         //find
-        Task<T?> FindAsync(Expression<Func<T, bool>> criteria, string[]? includes);
-        Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> criteria, string[]? includes);
+        Task<T?> FindAsync(Expression<Func<T, bool>> criteria, string[]? includes = null);
+        Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> criteria, string[]? includes = null);
         Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> criteria, string[]? includes, int take, int skip);
-        Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> criteria, string[]? includes, int? take, int? skip,
-            Expression<Func<T, object>>? orderBy, string orderByDirection = OrderBy.Ascending);
+        Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> criteria, string[]? includes = null, int? take = null, int? skip = null,
+            Expression<Func<T, object>>? orderBy = null, string orderByDirection = OrderBy.Ascending);
         //add
         Task<T> AddAsync(T entity);
         Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities);
