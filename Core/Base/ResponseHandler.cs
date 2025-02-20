@@ -7,7 +7,7 @@ namespace Core.Base
         public ResponseHandler() {}
 
         #region Methods
-        public Response<T> Deleted<T>(string? Message)
+        public Response<T> Deleted<T>(string? Message = null)
         {
             return new Response<T>()
             {
@@ -16,7 +16,17 @@ namespace Core.Base
                 Message = Message is null ? "Deleted Successfully" : Message
             };
         }
-        public Response<T> Success<T>(T entity, object? Meta)
+        public Response<T> SuccessWithoutData<T>(string? Message = null, object? Meta = null)
+        {
+            return new Response<T>()
+            {
+                StatusCode = HttpStatusCode.OK,
+                Succeeded = true,
+                Message = Message is null ? "Data Returned Successfully": Message,
+                Meta = Meta
+            };
+        }
+        public Response<T> Success<T>(T entity, object? Meta = null)
         {
             return new Response<T>()
             {
@@ -27,7 +37,7 @@ namespace Core.Base
                 Meta = Meta
             };
         }
-        public Response<T> Unauthorized<T>(string? Message)
+        public Response<T> Unauthorized<T>(string? Message = null)
         {
             return new Response<T>()
             {
@@ -36,7 +46,7 @@ namespace Core.Base
                 Message = Message is null ? "You are not Authorized To Access This Resources" : Message
             };
         }
-        public Response<T> BadRequest<T>(string? Message)
+        public Response<T> BadRequest<T>(string? Message = null)
         {
             return new Response<T>()
             {
@@ -46,7 +56,7 @@ namespace Core.Base
             };
         }
 
-        public Response<T> UnprocessableEntity<T>(string? Message)
+        public Response<T> UnprocessableEntity<T>(string? Message = null)
         {
             return new Response<T>()
             {
@@ -57,7 +67,7 @@ namespace Core.Base
         }
 
 
-        public Response<T> NotFound<T>(string? message)
+        public Response<T> NotFound<T>(string? message = null)
         {
             return new Response<T>()
             {
@@ -67,7 +77,7 @@ namespace Core.Base
             };
         }
 
-        public Response<T> Created<T>(T entity, object? Meta)
+        public Response<T> Created<T>(T entity, object? Meta = null)
         {
             return new Response<T>()
             {
