@@ -36,6 +36,8 @@ namespace Api.Base
                     return new AcceptedResult(string.Empty, response);
                 case HttpStatusCode.UnprocessableEntity:
                     return new UnprocessableEntityObjectResult(response);
+                case HttpStatusCode.Forbidden:
+                    return new ObjectResult(response) { StatusCode = 403 };
                 default:
                     return new BadRequestObjectResult(response);
             }

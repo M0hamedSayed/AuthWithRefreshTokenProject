@@ -23,13 +23,17 @@ namespace Core.Middleware
             try
             {
                 await _next(context);
-                if (context.Response.StatusCode == 404 && !context.Response.HasStarted)
+                if (!context.Response.HasStarted)
                 {
-                    throw new KeyNotFoundException("Not Found !");
-                } 
-                else if (context.Response.StatusCode == 401 && !context.Response.HasStarted)
-                {
-                    throw new UnauthorizedAccessException("Not Authorized !");
+                    switch (context.Response.StatusCode)
+                    {
+                        case 404:
+                            throw new KeyNotFoundException("Not Found!");
+                        case 401:
+                            throw new UnauthorizedAccessException("Not Authorized!");
+                        case 403:
+                            throw new AccessViolationException("Forbidden!");
+                    }
                 }
             }
             catch (Exception error)
@@ -67,6 +71,12 @@ namespace Core.Middleware
                         responseModel.Message = e.Message;
                         responseModel.StatusCode = HttpStatusCode.BadRequest;
                         response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        break;
+                    case AccessViolationException e:
+                        // can't update error
+                        responseModel.Message = e.Message;
+                        responseModel.StatusCode = HttpStatusCode.Forbidden;
+                        response.StatusCode = (int)HttpStatusCode.Forbidden;
                         break;
                     case Exception e:
                         if (e.GetType().ToString() == "ApiException")
