@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 
 namespace Core.Behaviors
@@ -34,7 +29,7 @@ namespace Core.Behaviors
                 {
                     var message = failures.Select(error =>  $"{error.PropertyName} : {error.ErrorMessage}").FirstOrDefault();
 
-                    throw new ValidationException(message);
+                    throw new System.ComponentModel.DataAnnotations.ValidationException(message);
                 }
             }
             return await next();  
