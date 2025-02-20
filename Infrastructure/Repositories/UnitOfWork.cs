@@ -24,7 +24,7 @@ namespace Infrastructure.Repositories
 
         public RoleManager<ApplicationRole> RoleManager { get; } = roleManager;
 
-        public async void Complete()
+        public async Task Complete()
         {
             await _Context.SaveChangesAsync();
         }

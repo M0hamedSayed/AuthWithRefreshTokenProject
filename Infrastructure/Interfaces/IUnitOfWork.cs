@@ -12,7 +12,7 @@ namespace Infrastructure.Interfaces
         UserManager<ApplicationUser> UserManager { get; }
         SignInManager<ApplicationUser> SignInManager { get; }
         RoleManager<ApplicationRole> RoleManager { get; }
-        void Complete();
+        Task Complete();
 
     }
 }
