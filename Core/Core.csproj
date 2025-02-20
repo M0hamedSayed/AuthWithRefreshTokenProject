@@ -21,7 +21,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\Admin\Commands\Results\" />
+    <Folder Include="Features\User\Commands\" />
+    <Folder Include="Mapping\Admin\Commands\" />
     <Folder Include="Mapping\Authentication\Queries\" />
+    <Folder Include="Mapping\User\Commands\" />
   </ItemGroup>
 
 </Project>

@@ -29,6 +29,7 @@ namespace Service.Extensions
             services.AddTransient<IEmailService,EmailService>();
             services.AddTransient<IAuthenticationService,AuthenticationService>();
             services.AddTransient<ICurrentUserService, CurrentUserService>();
+            services.AddTransient<IAdminService, AdminService>();
 
             return services;
         }
