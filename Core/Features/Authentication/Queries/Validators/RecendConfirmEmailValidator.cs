@@ -6,6 +6,10 @@ namespace Core.Features.Authentication.Queries.Validators
 {
     public class RecendConfirmEmailValidator : AbstractValidator<ResendConfirmEmailQuery>
     {
+        public RecendConfirmEmailValidator()
+        {
+            ApplyValidationRules();
+        }
         #region Methods
         public void ApplyValidationRules()
         {

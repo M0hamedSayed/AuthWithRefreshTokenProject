@@ -11,7 +11,10 @@ namespace Core.Features.Authentication.Commands.Validators
     public class LoginValidator : AbstractValidator<LoginCommand>
     {
 
-
+        public LoginValidator()
+        {
+            ApplyValidationRules();
+        }
         #region Methods
         public void ApplyValidationRules()
         {

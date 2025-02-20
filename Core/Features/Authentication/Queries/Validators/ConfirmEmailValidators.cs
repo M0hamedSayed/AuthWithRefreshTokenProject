@@ -10,7 +10,10 @@ namespace Core.Features.Authentication.Queries.Validators
 {
     public class ConfirmEmailValidators : AbstractValidator<ConfirmEmailQuery>
     {
-        public ConfirmEmailValidators() { }
+        public ConfirmEmailValidators() 
+        {
+            ApplyValidationsRules();
+        }
 
         public void ApplyValidationsRules()
         {
