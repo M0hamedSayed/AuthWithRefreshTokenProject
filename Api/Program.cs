@@ -13,6 +13,9 @@ using System.Data;
 using Infrastructure.Seeding;
 using Infrastructure.Repositories;
 using Infrastructure.Interfaces;
+using Service.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,12 +53,42 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
 // Dependency injections
 builder.Services.AddCoreDependancies()
     .AddAuthConfiguration(builder.Configuration)
-    .AddInfraDependancies();
+    .AddInfraDependancies()
+    .AddServices();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
+//Swagger Gn
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Auth Project", Version = "v1" });
 
+    c.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer 12345abcdef')",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = JwtBearerDefaults.AuthenticationScheme
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+        new OpenApiSecurityScheme
+        {
+            Reference = new OpenApiReference
+            {
+                Type = ReferenceType.SecurityScheme,
+                Id = JwtBearerDefaults.AuthenticationScheme
+            }
+        },
+        Array.Empty<string>()
+        }
+    });
+
+});
 
 //allowed origins
 builder.Services.AddCors(options => {
