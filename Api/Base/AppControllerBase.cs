@@ -1,13 +1,14 @@
 ﻿using System.Net;
+using Asp.Versioning;
 using Core.Base;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Base
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
     public class AppControllerBase : ControllerBase
     {
         private IMediator? _mediator;
