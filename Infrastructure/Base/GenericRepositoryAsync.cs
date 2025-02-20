@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Infrastructure.Consts;
 using Infrastructure.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -177,6 +178,20 @@ namespace Infrastructure.Base
                 foreach (var include in includes)
                     query = query.Include(include);
             return query;
+        }
+        public EntityEntry<T> Entry(T entity)
+        {
+            return _context.Entry(entity);
+        }
+
+        public void Attach(T entity)
+        {
+            _context.Set<T>().Attach(entity);
+        }
+
+        public void AttachRange(IEnumerable<T> entities)
+        {
+            _context.Set<T>().AttachRange(entities);
         }
         #endregion
     }

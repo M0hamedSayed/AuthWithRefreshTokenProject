@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Infrastructure.Consts;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Infrastructure.Base
@@ -47,6 +48,10 @@ namespace Infrastructure.Base
         Task<IDbContextTransaction> BeginTransactionAsync();
         Task CommitAsync();
         Task RollBackAsync();
+
+        void Attach(T entity);
+        EntityEntry<T> Entry(T entity);
+        void AttachRange(IEnumerable<T> entities);
 
     }
 }
